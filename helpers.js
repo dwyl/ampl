@@ -31,9 +31,10 @@ function getPosts(callback) {
           errors.push(error);
           var post = {path:filepath};
           post.title = getTitle(data);
+          post.slug  = slug(post.title);
           post.intro = getIntro(data);
           post.mtime = stats.mtime;
-          post.data = data;
+          post.full = data;
           posts.push(post);
 
           if(--remaining === 0){
@@ -50,9 +51,13 @@ function getPosts(callback) {
   });
 }
 
+function slug (title) {
+  return title.replace(/\s+/g, '-').toLowerCase();
+}
+
 // extract post title
 function getTitle (post) {
-  return post.toString().split('\n')[0].replace('#', '').trim();
+  return post.toString().split('\n')[0].replace(/#/g, '').trim();
 }
 
 // extract the first few lines of the post
@@ -62,7 +67,11 @@ function getIntro (post, lineLimit) {
   var lines = post.toString().split('\n');
   var end = lines.length > lineLimit ? lineLimit : lines.length;
   // assumes first line is the title
-  return lines.slice(0, end).join('\n');
+  return lines.slice(1, end).join('\n');
+}
+
+function buildFullPost (post) {
+
 }
 
 module.exports = {
