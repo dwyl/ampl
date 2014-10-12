@@ -51,6 +51,7 @@ function getPosts(callback) {
   });
 }
 
+// convert title to url http://stackoverflow.com/questions/1983648
 function slug (title) {
   return title.replace(/\s+/g, '-').toLowerCase();
 }
@@ -70,6 +71,7 @@ function getIntro (post, lineLimit) {
   return lines.slice(1, end).join('\n');
 }
 
+// tbc
 function buildFullPost (post) {
 
 }
