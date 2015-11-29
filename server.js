@@ -1,6 +1,6 @@
 var Hapi   = require('hapi');
 var Inert  = require('inert'); // serve static content
-var Path   = require('path');
+var Path   = require('path');  // node core module
 // var Basic   = require('hapi-auth-basic');
 // var AuthJWT = require('hapi-auth-jwt2')
 // var Joi     = require('joi');
