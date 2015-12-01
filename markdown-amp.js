@@ -7,5 +7,5 @@ var Remarkable = require('remarkable');
 
 var md = new Remarkable('full');
 module.exports = function parse(mdString) {
-  return md.render(mdString);
+  return md.render(mdString).replace(/(<img)/g, '<amp-img');
 };
