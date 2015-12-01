@@ -3,12 +3,14 @@ var htmlparser = require("htmlparser2");
 var sizeOf = require('image-size');
 // var Buffer = require('buffer');
 var http = require('http');
+var https = require('https');
+// var https = require('https');
 var url = require('url');
 
 // var HtmlParser = require('htmlparser2');
 // var DomUtils = require('domutils');
 var fs = require('fs');
-var rawHtml = fs.readFileSync(__dirname + '/../posts/post-1.html').toString();
+var rawHtml = fs.readFileSync(__dirname + '/../posts/image-test.html').toString();
 // console.log(rawHtml);
 var getImageUrls = function(html, callback) {
   var urls = [];
@@ -39,15 +41,13 @@ var getImageSizes = function(html, callback) {
     var dimsArray = [];
     imageUrls.forEach(function(imageUrl, index) {
       // console.log('got imageurls. On ', imageUrl)
-      // console.log('options: ', url.parse(imageUrl));
-      var request = http.request(url.parse(imageUrl), function(response) {
-        var chunks = [];
-        response.on('data', function(chunk) {
-          chunks.push(chunk);
+      var options = url.parse(imageUrl);
+      if (options.protocol === 'https:') options.protocol = 'http:';
+      console.log('options: ', url.parse(imageUrl));
+      var request = http.request(options, function(response) {
+        getBody(response, function(body) {
+          next(sizeOf(body), index);
         });
-        response.on('end', function() {
-          next(sizeOf(Buffer.concat(chunks)), index);
-        })
       });
       request.end();
     });
@@ -58,6 +58,16 @@ var getImageSizes = function(html, callback) {
         callback(dimsArray);
       }
     }
+  });
+}
+
+var getBody = function(response, callback) {
+  var chunks = [];
+  response.on('data', function(chunk) {
+    chunks.push(chunk);
+  });
+  response.on('end', function() {
+    callback(Buffer.concat(chunks));
   });
 }
 
