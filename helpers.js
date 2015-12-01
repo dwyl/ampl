@@ -42,7 +42,7 @@ function getPosts(callback) {
             posts.sort(function(a,b){
               return b.mtime - a.mtime;
             }); // see: http://stackoverflow.com/questions/10123953
-
+            //console.log(posts);
             callback(errors, posts);
           }
         });
