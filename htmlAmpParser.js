@@ -36,7 +36,6 @@ var getImageSizes = function(html, callback) {
     imageUrls.forEach(function(imageUrl, index) {
       var options = url.parse(imageUrl);
       if (options.protocol === 'https:') options.protocol = 'http:';
-      console.log(options);
       var request = http.request(options, function(response) {
         getBody(response, function(body) {
           next(sizeOf(body), index);

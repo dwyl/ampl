@@ -8,7 +8,16 @@ var parse = function(mdString, callback) {
   console.log('html created!: ', htmlString);
   getImageDimensionsFrom(htmlString, function(dimensions) {
     console.log('dims: ',dimensions);
-    // callback(md.render(mdString).replace(/(<img)/g, '<amp-img'));
+    var i = 0;
+    var re = /(<img)/;
+    while(re.test(htmlString)) {
+      var newTag =
+        '<amp-img width=\"' + dimensions[i].width +
+        '\" height=\"' + dimensions[i].height + '\"';
+      htmlString = htmlString.replace(re, newTag);
+      i += 1;
+    }
+    callback(htmlString);
   });
 };
 
