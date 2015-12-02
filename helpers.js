@@ -30,7 +30,6 @@ h.getPosts = function(callback) {
         fs.readFile(filepath, 'utf8', function(error, data){
           errors.push(error);
           var post = {path:filepath};
-          console.log('DATA-------->>>>>>>',data);
 
           post.title = h.getTitle(data);
           post.slug  = h.slug(post.title);
@@ -61,7 +60,6 @@ h.slug = function (title) {
 // extract post title
 h.getTitle = function (post) {
   var title =  post.toString().split('\n')[0].replace(/#/g, '').trim();
-  console.log("Title ------->>>>>>>>",title);
   return title;
 };
 
@@ -73,7 +71,6 @@ h.getIntro = function (post, lineLimit) {
   var end = lines.length > lineLimit ? lineLimit : lines.length;
   // assumes first line is the title
   var intro = lines.slice(1, end).join('\n');
-  console.log("Intro ------->>>>>>>>",intro);
   return intro;
 };
 
