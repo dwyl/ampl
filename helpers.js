@@ -1,9 +1,9 @@
 var fs = require('fs');
 var path = require('path');
 
-
+var h = {};
 // date-ordered (descending) list of posts
-function getPosts(callback) {
+h.getPosts = function(callback) {
   var files = fs.readdirSync(path.resolve('./posts'));
   var posts = [];  // date-ordered array of posts
   var errors = []; // an array of all errors
@@ -30,9 +30,11 @@ function getPosts(callback) {
         fs.readFile(filepath, 'utf8', function(error, data){
           errors.push(error);
           var post = {path:filepath};
-          post.title = getTitle(data);
-          post.slug  = slug(post.title);
-          post.intro = getIntro(data);
+          console.log('DATA-------->>>>>>>',data);
+
+          post.title = h.getTitle(data);
+          post.slug  = h.slug(post.title);
+          post.intro = h.getIntro(data);
           post.mtime = stats.mtime;
           post.full = data;
           posts.push(post);
@@ -49,33 +51,35 @@ function getPosts(callback) {
       }
     });
   });
-}
+};
 
 // convert title to url http://stackoverflow.com/questions/1983648
-function slug (title) {
+h.slug = function (title) {
   return title.replace(/\s+/g, '-').toLowerCase();
-}
+};
 
 // extract post title
-function getTitle (post) {
-  return post.toString().split('\n')[0].replace(/#/g, '').trim();
-}
+h.getTitle = function (post) {
+  var title =  post.toString().split('\n')[0].replace(/#/g, '').trim();
+  console.log("Title ------->>>>>>>>",title);
+  return title;
+};
 
 // extract the first few lines of the post
-function getIntro (post, lineLimit) {
+h.getIntro = function (post, lineLimit) {
   lineLimit = lineLimit || 5;
   // separate lines in markdown
   var lines = post.toString().split('\n');
   var end = lines.length > lineLimit ? lineLimit : lines.length;
   // assumes first line is the title
-  return lines.slice(1, end).join('\n');
-}
+  var intro = lines.slice(1, end).join('\n');
+  console.log("Intro ------->>>>>>>>",intro);
+  return intro;
+};
 
 // tbc
-function buildFullPost (post) {
+h.buildFullPost = function (post) {
 
-}
-
-module.exports = {
-  getPosts : getPosts
 };
+
+module.exports = h;
