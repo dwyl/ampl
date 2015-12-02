@@ -1,6 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-
+var mdParser = require('./markdown-amp.js');
 
 // date-ordered (descending) list of posts
 function getPosts(callback) {
@@ -26,25 +26,33 @@ function getPosts(callback) {
       errors.push(err);
       // console.log(stats);
       if(!err) {
-
         fs.readFile(filepath, 'utf8', function(error, data){
           errors.push(error);
-          var post = {path:filepath};
-          post.title = getTitle(data);
-          post.slug  = slug(post.title);
-          post.intro = getIntro(data);
-          post.mtime = stats.mtime;
-          post.full = data;
-          posts.push(post);
+          mdParser(data, function(postHtml) {
+            var post = {};
+            post.path = filepath;
+            post.title = getTitle(data);
+            post.slug  = slug(post.title);
+          //  post.intro = getIntro(data);
+            post.mtime = stats.mtime;
+            post.html = postHtml;
+            posts.push(post);
+            if(--remaining === 0){
+              // sorts potsts by date decending (newest first)
+              posts.sort(function(a,b){
+                return b.mtime - a.mtime;
+              }); // see: http://stackoverflow.com/questions/10123953
+              callback(errors, posts);
+            }
+          });
+          // var post = {path:filepath};
+          // post.title = getTitle(data);
+          // post.slug  = slug(post.title);
+          // post.intro = getIntro(data);
+          // post.mtime = stats.mtime;
+          // post.full = data;
 
-          if(--remaining === 0){
-            // sorts potsts by date decending (newest first)
-            posts.sort(function(a,b){
-              return b.mtime - a.mtime;
-            }); // see: http://stackoverflow.com/questions/10123953
 
-            callback(errors, posts);
-          }
         });
       }
     });
