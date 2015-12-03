@@ -5,6 +5,7 @@ var http = require('http');
 var url = require('url');
 
 var fs = require('fs');
+
 var rawHtml =
   fs.readFileSync(__dirname + '/../posts/image-test.html').toString();
 
