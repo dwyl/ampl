@@ -17,3 +17,5 @@ console.log(buildPost("hello you"))
 module.exports = {
   buildPost: buildPost
 }
+
+module.exports = buildPost;
