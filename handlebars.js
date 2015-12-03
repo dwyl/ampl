@@ -18,3 +18,5 @@ function buildPost(postData) {
 module.exports = {
   buildPost: buildPost
 }
+
+module.exports = buildPost;
