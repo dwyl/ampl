@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <style>body {opacity: 0}</style><noscript><style>body {opacity: 1}</style></noscript>
     <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <title>Index</title>
   </head>
 <body>
 
     <div class="container">
+      <ul class="index-links">
       {{#each post}}
-        <a href={{this}}><li>{{this}}</li></a>
+        <li><a href={{this}}>{{this}}</a></li>
       {{/each}}
+      </ul>
     </div>
 
 </body>
