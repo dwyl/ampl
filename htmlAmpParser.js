@@ -6,9 +6,6 @@ var url = require('url');
 
 var fs = require('fs');
 
-var rawHtml =
-  fs.readFileSync(__dirname + '/../posts/image-test.html').toString();
-
 var getImageUrls = function(html, callback) {
   var urls = [];
   var parser = new htmlparser.Parser({

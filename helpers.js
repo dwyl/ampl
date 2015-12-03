@@ -4,7 +4,7 @@ var mdParser = require('./markdown-amp.js');
 
 // date-ordered (descending) list of posts
 function getPosts(callback) {
-  var files = fs.readdirSync(path.resolve('./posts/tests'));
+  var files = fs.readdirSync(path.resolve('./posts'));
   var posts = [];  // date-ordered array of posts
   var errors = []; // an array of all errors
 
@@ -22,7 +22,7 @@ function getPosts(callback) {
   remaining = mds.length; // we decrement this below
 
   mds.map(function(file){
-    var filepath = path.resolve('./posts/tests/'+file);
+    var filepath = path.resolve('./posts/'+file);
     // var stats = fs.statSync(filepath);
     // var data = fs.readFileSync(filepath);
 
