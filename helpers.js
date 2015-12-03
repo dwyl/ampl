@@ -4,11 +4,12 @@ var mdParser = require('./markdown-amp.js');
 
 // date-ordered (descending) list of posts
 function getPosts(callback) {
-  var files = fs.readdirSync(path.resolve('./posts'));
+  var files = fs.readdirSync(path.resolve('./posts/tests'));
   var posts = [];  // date-ordered array of posts
   var errors = []; // an array of all errors
 
   // reduce list of files to only markdown
+  // mds is an array of file names of all md files in specified directory
   var mds = files.map(function(file) {
     if(path.extname(file).toLowerCase() === '.md') {
       return file;
@@ -21,7 +22,11 @@ function getPosts(callback) {
   remaining = mds.length; // we decrement this below
 
   mds.map(function(file){
-    var filepath = path.resolve('./posts/'+file);
+    var filepath = path.resolve('./posts/tests/'+file);
+    // var stats = fs.statSync(filepath);
+    // var data = fs.readFileSync(filepath);
+
+
     fs.stat(filepath, function(err, stats){
       errors.push(err);
       // console.log(stats);

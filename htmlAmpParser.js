@@ -63,8 +63,4 @@ var getBody = function(response, callback) {
   });
 }
 
-// getImageSizes(rawHtml, function(dims) {
-//   console.log(dims);
-// })
-
 module.exports = getImageSizes;
