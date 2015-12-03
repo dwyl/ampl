@@ -18,7 +18,7 @@ server.register(Inert, function (err) {
       method: 'GET',
       path: '/{param*}',
       handler: {
-        directory: { path: Path.normalize(__dirname + '/../') }
+        directory: { path: Path.normalize(__dirname + '/../.site/') }
       }
     });
   // server.route(routes);
