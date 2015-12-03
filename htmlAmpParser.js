@@ -5,6 +5,7 @@ var http = require('http');
 var url = require('url');
 
 var fs = require('fs');
+
 var rawHtml =
   fs.readFileSync(__dirname + '/../posts/image-test.html').toString();
 
@@ -62,9 +63,5 @@ var getBody = function(response, callback) {
     callback(Buffer.concat(chunks));
   });
 }
-
-// getImageSizes(rawHtml, function(dims) {
-//   console.log(dims);
-// })
 
 module.exports = getImageSizes;
