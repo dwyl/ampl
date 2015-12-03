@@ -16,7 +16,7 @@ function getPosts(callback) {
     }
   });
   // remove undefined, null, etc. - http://stackoverflow.com/questions/281264
-  mds = mds.filter(function(n){ return n });
+  mds = mds.filter(function(n){ return n; });
 
   // number of markdown files (posts)
   remaining = mds.length; // we decrement this below
