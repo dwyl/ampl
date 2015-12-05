@@ -36,10 +36,7 @@ h.getPosts = function(callback) {
           post.intro = h.getIntro(data);
           post.mtime = stats.mtime;
           post.full = data;
-          // if .img tags exist in post.full
-          if (post.full.indexOf("![") > -1){
-            post.full = h.convertImgTagInPost(post.full);
-          }
+          post.full = h.convertImgTagInPost(post.full);
           posts.push(post);
           if(--remaining === 0){
             // sorts potsts by date decending (newest first)
@@ -80,10 +77,17 @@ h.getIntro = function (post, lineLimit) {
 // extract the images in .md and adds newline characters before and after
 h.convertImgTagInPost = function (post) {
   var images = post.match(/(!\[.*?\]\()(.+?)(\))/g);
-    images.forEach(function(value, index, array){
-      post = post.replace(value, '\n\n' + value + '\n\n');
-    });
+  //if there are no images
+  if (images===null) {
     return post;
+  }
+  //if there are images
+  else {
+  images.forEach(function(value, index, array){
+    post = post.replace(value, '\n\n' + value + '\n\n');
+  });
+  return post;
+  }
 };
 
 // tbc
