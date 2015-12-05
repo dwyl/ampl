@@ -10,21 +10,23 @@ function registerPartials(){
   console.log(partials);
 }
 
-function buildPost(postData, source) {
+function buildPost(postData, style) {
   var source = fs.readFileSync(__dirname + '/../views/layout/post.html');
   var template = Handlebars.compile(source.toString());
   var data = {
-    "content": postData
+    content: postData,
+    style: style
   };
 
   return template(data);
 }
 
-function buildIndex(indexData){
+function buildIndex(indexData, style){
   var source = fs.readFileSync(__dirname + '/../views/layout/index.html');
   var template = Handlebars.compile(source.toString());
   var data = {
-    "post": indexData
+    post: indexData,
+    style: style
   };
   return template(data);
 }
