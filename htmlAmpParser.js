@@ -27,20 +27,24 @@ var getImageSizes = function(html, callback) {
     var totalLinks = imageUrls.length;
     if (totalLinks === 0) {
       callback([]);
-    }
-    var dimsFetched = 0;
-    var dimsArray = [];
-    // console.log('number of images: ', imageUrls.length);
-    imageUrls.forEach(function(imageUrl, index) {
-      var options = url.parse(imageUrl);
-      if (options.protocol === 'https:') options.protocol = 'http:';
-      var request = http.request(options, function(response) {
-        getBody(response, function(body) {
-          next(sizeOf(body), index);
+    } else {
+      // console.log(totalLinks, imageUrls);
+      var dimsFetched = 0;
+      var dimsArray = [];
+      // console.log('number of images: ', imageUrls.length);
+      imageUrls.forEach(function(imageUrl, index) {
+        var options = url.parse(imageUrl);
+        if (options.protocol === 'https:') options.protocol = 'http:';
+        console.log("making request!!");
+        var request = http.request(options, function(response) {
+          console.log("request succesful");
+          getBody(response, function(body) {
+            next(sizeOf(body), index);
+          });
         });
+        request.end();
       });
-      request.end();
-    });
+    }
     var next = function(dims, index) {
       dimsFetched += 1;
       dimsArray[index] = dims;

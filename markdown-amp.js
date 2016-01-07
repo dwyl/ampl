@@ -5,9 +5,9 @@ var getImageDimensionsFrom = require('./htmlAmpParser.js');
 var parse = function(mdString, callback) {
   var md = new Remarkable('full');
   var htmlString = md.render(mdString);
-  console.log('html created!: ', htmlString);
+  // console.log('html created!: ', htmlString);
   getImageDimensionsFrom(htmlString, function(dimensions) {
-    console.log('dims: ',dimensions);
+    // console.log('dims: ',dimensions);
     var i = 0;
     var imageTagRegex = /(<img)/;
     while(imageTagRegex.test(htmlString)) {

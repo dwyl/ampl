@@ -7,7 +7,7 @@ function registerPartials(){
     var partialName = partial.split('.')[0];
     Handlebars.registerPartial(partialName,fs.readFileSync(__dirname + '/../views/partials/' + partial).toString());
   });
-  console.log(partials);
+  // console.log(partials);
 }
 
 function buildPost(postData, style) {
