@@ -35,9 +35,7 @@ var getImageSizes = function(html, callback) {
       imageUrls.forEach(function(imageUrl, index) {
         var options = url.parse(imageUrl);
         if (options.protocol === 'https:') options.protocol = 'http:';
-        console.log("making request!!");
         var request = http.request(options, function(response) {
-          console.log("request succesful");
           getBody(response, function(body) {
             next(sizeOf(body), index);
           });
@@ -65,4 +63,6 @@ var getBody = function(response, callback) {
   });
 }
 
-module.exports = getImageSizes;
+module.exports = {
+  getDims: getImageSizes
+};

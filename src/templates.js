@@ -18,7 +18,7 @@ var createLinkHtml = link => `
 <a href='${link}'>${link}</a>
 `;
 
-export var buildPost = (style, contentHTML) `
+export var html2Amp = (style, contentHTML) => `
   ${createAmpHeader(style)}
     <body>
       ${contentHTML}

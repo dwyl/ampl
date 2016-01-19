@@ -1,13 +1,12 @@
 var Remarkable = require('remarkable');
 
-var getImageDimensionsFrom = require('./htmlAmpParser.js');
+import { getDims } from './imageDims.js';
+import { html2Amp } from './templates.js';
 
-var parse = function(mdString, callback) {
+export function parse(mdString, callback) {
   var md = new Remarkable('full');
   var htmlString = md.render(mdString);
-  // console.log('html created!: ', htmlString);
-  getImageDimensionsFrom(htmlString, function(dimensions) {
-    // console.log('dims: ',dimensions);
+  getDims(htmlString, function(dimensions) {
     var i = 0;
     var imageTagRegex = /(<img)/;
     while(imageTagRegex.test(htmlString)) {
@@ -17,8 +16,7 @@ var parse = function(mdString, callback) {
       htmlString = htmlString.replace(imageTagRegex, newTag);
       i += 1;
     }
-    callback(htmlString);
+    var ampHtml = html2Amp("", htmlString);
+    callback(ampHtml);
   });
 };
-
-module.exports = parse;
