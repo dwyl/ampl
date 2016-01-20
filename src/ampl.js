@@ -35,7 +35,7 @@ var attribStr = attribs => Object.keys(attribs).map(attribKey => (
     `${attribKey}='${attribs[attribKey]}'`
 )).join(' ');
 
-var parseRules = [
+var createParseRules = () => [
   (urls => ({
     label: "urls",
     target: "img",
@@ -51,10 +51,10 @@ var parseRules = [
       </div>
     `
   }
-]
+];
 
 var parseHtml = function(html, callback) {
-  var urls = [];
+  var parseRules = createParseRules();
   var tagStack = [{text: "<!doctype html>"}];
   var parser = new htmlparser.Parser({
     onopentag: function(name, attribs) {
@@ -66,9 +66,6 @@ var parseHtml = function(html, callback) {
           rule.onOpenTag(attribs);
         }
       });
-      if (name === 'img') {
-        urls.push(attribs.src);
-      }
     },
     ontext: function(text) {
       tagStack[tagStack.length-1].text += text;
