@@ -10,6 +10,3 @@ test('image dimensions found', t=> {
     t.end();
   });
 })
-
-
-// this is so meta ...
