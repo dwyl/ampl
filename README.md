@@ -60,6 +60,7 @@ To *run* this example, execute the following command in your terminal:
 ```js
 ./node_modules/babel-cli/bin/babel-node.js example/simple.js
 ```
+
 This will output the following AMP-Compliant `html`:
 ```js
 <html amp>
