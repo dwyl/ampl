@@ -1,0 +1,28 @@
+{
+  "name": "ampl",
+  "version": "1.0.1",
+  "description": "ampl converts your markdown files into AMP-compliant html so they can be cached by google for the fastest possible page load",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dwyl/ampl.git"
+  },
+  "keywords": [
+    "AMP",
+    "fast",
+    "compile"
+  ],
+  "author": "dwyl",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/dwyl/ampl/issues"
+  },
+  "homepage": "https://github.com/nelsonic/ampl#readme",
+  },
+  "dependencies": {
+    "hapi": "^12.1.0",
+    "inert": "^3.2.0",
+    "ampl": "^1.0.1"
+  }
+}
