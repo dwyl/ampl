@@ -25,11 +25,11 @@ export var html2Amp = (style, contentHTML) => `
     </body>
   </html>
 `;
-
-export var buildIndex = (style, linksArr) => `
-  ${createAmpHeader(style)}
-  <body>
-    ${contentHTMLArr.map(createLinkHtml)}
-  </body>
-</html>
-`;
+//
+// export var buildIndex = (style, linksArr) => `
+//   ${createAmpHeader(style)}
+//   <body>
+//     ${contentHTMLArr.map(createLinkHtml)}
+//   </body>
+// </html>
+// `;

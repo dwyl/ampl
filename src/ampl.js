@@ -9,28 +9,18 @@ import { html2Amp } from './templates.js';
 export function parse(mdString, css, callback) {
   var htmlRaw = remarkable.render(mdString);
   var htmlAmp = html2Amp(css, htmlRaw)
-  console.log(htmlAmp);
   parseHtml(htmlAmp, function(htmlAmp, data) {
-    console.log(data);
     getDims(data.urls, function(dimensions) {
-      console.log(2);
-      console.log(htmlAmp);
       // todo remove while loop
       var i = 0;
       var imageTagRegex = /(<img)/;
       while(imageTagRegex.test(htmlAmp)) {
-        console.log("in!");
         var newTag = `
           <amp-img
             width="${dimensions[i].width}"
             height="${dimensions[i].height}"
             layout="responsive"
         `;
-        // var newTag = `
-        // <amp-img
-        //   width="${dimensions[i].width}"
-        //   height="${dimensions[i].height}"
-        // >`
         htmlAmp = htmlAmp.replace(imageTagRegex, newTag);
         i += 1;
       }
@@ -83,7 +73,7 @@ var parseHtml = function(html, callback) {
     ontext: function(text) {
       tagStack[tagStack.length-1].text += text;
     },
-    onclosetag: function(name/*can probs leave this empty*/) {
+    onclosetag: function(name) {
       var tag = tagStack.pop();
       var text =
         `<${tag.name} ${attribStr(tag.attribs)}>${tag.text}</${tag.name}>`;
