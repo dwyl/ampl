@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "babel-node test",
-    "watch-build": "babel src -d lib -w"
+    "watch-build": "babel src -d lib -w",
+    "build": "babel src -d lib",
+    "prepublish" : "npm run build"
   },
   "repository": {
     "type": "git",
