@@ -14,9 +14,6 @@ var createAmpHeader = style => `
     </head>
 `;
 
-var createLinkHtml = link => `
-<a href='${link}'>${link}</a>
-`;
 
 export var html2Amp = (style, contentHTML) => `
   ${createAmpHeader(style)}
@@ -25,6 +22,11 @@ export var html2Amp = (style, contentHTML) => `
     </body>
   </html>
 `;
+
+
+// var createLinkHtml = link => `
+// <a href='${link}'>${link}</a>
+// `;
 //
 // export var buildIndex = (style, linksArr) => `
 //   ${createAmpHeader(style)}
