@@ -1,10 +1,10 @@
 var assert = require('assert');
 var sizeOf = require('image-size');
 var http = require('http');
+var https = require('https');
 var url = require('url');
 
 export var getDims = (imageUrls, callback) => {
-  console.log("!!!!", imageUrls);
   var totalLinks = imageUrls.length;
   if (totalLinks === 0) {
     setTimeout(function() {
@@ -15,8 +15,9 @@ export var getDims = (imageUrls, callback) => {
     var dimsArray = [];
     imageUrls.forEach(function(imageUrl, index) {
       var options = url.parse(imageUrl);
-      if (options.protocol === 'https:') options.protocol = 'http:';
-      var request = http.request(options, function(response) {
+      var proto = options.protocol === 'https:' ? https : http;
+      // if (options.protocol === 'https:') options.protocol = 'http:';
+      var request = proto.request(options, function(response) {
         getBody(response, function(body) {
           next(sizeOf(body), index);
         });
