@@ -30,6 +30,7 @@
     "tape": "^4.4.0"
   },
   "dependencies": {
+    "ampl": "^1.0.0",
     "hapi": "^12.1.0",
     "inert": "^3.2.0",
     "htmlparser2": "^3.9.0",
