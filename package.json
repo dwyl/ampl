@@ -1,11 +1,13 @@
 {
   "name": "ampl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ampl converts your markdown files into AMP-compliant html so they can be cached by google for the fastest possible page load",
   "main": "index.js",
   "scripts": {
     "test": "babel-node test",
-    "watch-build": "babel src -d lib -w"
+    "watch-build": "babel src -d lib -w",
+    "build": "babel src -d lib",
+    "prepublish" : "npm run build"
   },
   "repository": {
     "type": "git",
