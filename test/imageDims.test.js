@@ -1,6 +1,6 @@
 var test = require('tape');
 
-var parse = require('../lib/ampl.js');
+import { parse } from '../src/ampl.js';
 
 test('image dimensions found', t=> {
   var testMd = '![image](https://cloud.githubusercontent.com/assets/12845233/12449931/68f11832-bf78-11e5-87ff-d34e6a3487c6.png)'

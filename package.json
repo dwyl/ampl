@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "babel-node test",
-    "test": "npm run build && ./node_modules/.bin/istanbul cover ./node_modules/tape/bin/tape ./test/index.js",
+    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/babel-istanbul cover ./node_modules/tape/bin/tape ./test/",
     "watch-build": "babel src -d lib -w",
     "build": "babel src -d lib",
     "prepublish": "npm run build"
