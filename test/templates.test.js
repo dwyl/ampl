@@ -1,6 +1,6 @@
 var test = require('tape');
 
-var ampHtml = require('../lib/templates.js');
+var html2Amp = require('../lib/templates.js');
 
 test("template.js", t => {
   var style = "here is some styling";
