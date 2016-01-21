@@ -28,7 +28,7 @@ export var getDims = (imageUrls, callback) => {
               width: 0,
               height: 0
             }
-            console.log('failed to find size of image', imageUrl);
+            console.warn('failed to find size of image', imageUrl);
           }
           next(dims, index);
         });
