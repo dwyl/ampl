@@ -1,6 +1,6 @@
 {
   "name": "ampl",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ampl converts your markdown files into AMP-compliant html so they can be cached by google for the fastest possible page load",
   "main": "index.js",
   "scripts": {
