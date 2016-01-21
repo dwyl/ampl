@@ -44,7 +44,7 @@ npm install ampl --save
 
 #### use `ampl.parse` in your code
 
-Then in your code:
+Then in your **ES5** code:
 
 ```js
 var ampl = require('ampl');
@@ -54,6 +54,17 @@ ampl.parse(markdownString, cssStyle, function(ampHtml) {
   console.log(ampHtml);
 });
 ```
+
+*Alternatively*, if you are already using ***ES6*** in your project, write:
+```js
+import { parse } from 'ampl';
+const markdownString = '# Hello World!'; // or read from a .md file
+const cssStyle = 'h1 { color: green; }'; // or load your style.css file
+parse(markdownString, cssStyle, function(ampHtml) {
+  console.log(ampHtml);
+});
+```
+
 This simple example is in `example/simple.js`
 To *run* this example, execute the following command in your terminal:
 
@@ -76,14 +87,12 @@ This will output the following AMP-Compliant `html`:
     <title >Index</title>
   </head>
 
-
     <div class="wrapper-main">
       <body >
     <h1 >Hello World!</h1>
 
   </body>
     </div>
-
 </html>
 ```
 When viewed in a *Browser*:
@@ -94,3 +103,7 @@ When viewed in a *Browser*:
 ## Background Reading
 
 + The AMP Spec: https://github.com/ampproject/amphtml
+
+## Questions?
+
+> If you have any questions please ask: https://github.com/dwyl/ampl/issues
