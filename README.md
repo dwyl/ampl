@@ -1,6 +1,6 @@
 # ampl
 
-Ampl helps you transform your Markdown into AMP-compliant html so it loads super-fast!
+Ampl transforms your Markdown into ***AMP-compliant html*** so it loads super-fast!
 
 [![Build Status](https://travis-ci.org/dwyl/ampl.svg?branch=master)](https://travis-ci.org/dwyl/ampl)
 [![codecov.io](https://codecov.io/github/dwyl/ampl/coverage.svg?branch=master)](https://codecov.io/github/dwyl/ampl?branch=master)
