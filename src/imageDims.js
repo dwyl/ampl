@@ -19,8 +19,26 @@ export var getDims = (imageUrls, callback) => {
       // if (options.protocol === 'https:') options.protocol = 'http:';
       var request = proto.request(options, function(response) {
         getBody(response, function(body) {
-          next(sizeOf(body), index);
+          var dims;
+          try {
+            dims = sizeOf(body);
+            // if (typeof dims.width === 'undefined') throw 'NO';
+          } catch(e) {
+            dims = {
+              width: 0,
+              height: 0
+            }
+            console.warn('failed to find size of image', imageUrl);
+          }
+          next(dims, index);
         });
+      });
+      request.on('error', (e) => {
+        console.log(`problem with request: ${e.message}`);
+        next({
+          width: 0,
+          height: 0
+        }, index);
       });
       request.end();
     });
@@ -38,8 +56,13 @@ var getBody = function(response, callback) {
   var chunks = [];
   response.on('data', function(chunk) {
     chunks.push(chunk);
+    if (chunks.length === 2) {
+      callback(Buffer.concat(chunks));
+    }
   });
   response.on('end', function() {
-    callback(Buffer.concat(chunks));
+    if (chunks.length < 2) {
+      callback(Buffer.concat(chunks));
+    }
   });
 };
