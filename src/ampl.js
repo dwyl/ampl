@@ -19,8 +19,7 @@ export function parse(mdString, css, callback) {
           <amp-img
             width="${dimensions[i].width}"
             height="${dimensions[i].height}"
-            layout="responsive"
-        `;
+            layout="responsive"`;
         htmlAmp = htmlAmp.replace(imageTagRegex, newTag);
         i += 1;
       }
@@ -32,8 +31,8 @@ export function parse(mdString, css, callback) {
 var attribStr = attribs => Object.keys(attribs).map(attribKey => (
   attribs[attribKey].length === 0 ?
     attribKey :
-    `${attribKey}='${attribs[attribKey]}'`
-)).join(' ');
+    ` ${attribKey}='${attribs[attribKey]}'`
+)).join('');
 
 var createParseRules = () => [
   (urls => ({
@@ -72,14 +71,14 @@ var parseHtml = function(html, callback) {
     },
     onclosetag: function(name) {
       var tag = tagStack.pop();
-      var text =
-        `<${tag.name} ${attribStr(tag.attribs)}>${tag.text}</${tag.name}>`;
+      var text = tag.text;
       parseRules.forEach(rule => {
         if (rule.onCloseTag && !(rule.target && rule.target !== name)) {
           text = rule.onCloseTag(text);
         }
       });
-      tagStack[tagStack.length-1].text += text;
+      tagStack[tagStack.length-1].text +=
+        `<${tag.name} ${attribStr(tag.attribs)}>${text}</${tag.name}>`;
     },
     onend: function() {
       var ruleOutput = parseRules.reduce((data, rule) => {
