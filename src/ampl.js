@@ -1,32 +1,43 @@
-var Remarkable = require('remarkable');
-var htmlparser = require("htmlparser2");
-
-var remarkable = new Remarkable('full');
+import Remarkable from 'remarkable';
+import htmlparser from 'htmlparser2';
 
 import { getDims } from './imageDims.js';
-import { html2Amp } from './templates.js';
+import { createAmpPage } from './templates.js';
 
-export function parse(mdString, css, callback) {
-  var htmlRaw = remarkable.render(mdString);
-  var htmlAmp = html2Amp(css, htmlRaw)
-  parseHtml(htmlAmp, function(htmlAmp, data) {
-    getDims(data.urls, function(dimensions) {
+const remarkable = new Remarkable('full');
+
+export const parse = (markdown, optsOrStyle, callback) => {
+  const opts = typeof optsOrStyle === 'string' ?
+    {style: optsOrStyle} : optsOrStyle;
+  markdown2AmpHTML({ markdown }, HTML =>
+    callback(createAmpPage(HTML, opts))
+  );
+};
+
+export const markdown2AmpHTML = (opts, callback) => {
+  const { markdown } = opts;
+  console.log(opts, markdown);
+  console.log(markdown);
+  const htmlRaw = remarkable.render(markdown);
+  parseHtml(htmlRaw, (html, data) => {
+    getDims(data.urls, (dimensions) => {
+      const imageTagRegex = /(<img)/;
+      let htmlAml = html;
+      let i = 0;
       // todo remove while loop
-      var i = 0;
-      var imageTagRegex = /(<img)/;
-      while(imageTagRegex.test(htmlAmp)) {
-        var newTag = `
+      while(imageTagRegex.test(htmlAml)) {
+        const newTag = `
           <amp-img
             width="${dimensions[i].width}"
             height="${dimensions[i].height}"
             layout="responsive"`;
-        htmlAmp = htmlAmp.replace(imageTagRegex, newTag);
+        htmlAml = htmlAml.replace(imageTagRegex, newTag);
         i += 1;
       }
-      callback(htmlAmp);
+      callback(htmlAml);
     });
   });
-};
+}
 
 var attribStr = attribs => Object.keys(attribs).map(attribKey => (
   attribs[attribKey].length === 0 ?

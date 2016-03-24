@@ -1,18 +1,14 @@
-var test = require('tape');
+import test from 'tape';
 
-import { html2Amp } from '../src/templates.js'
+import { createAmpPage } from '../src/templates.js'
 
 test("template.js", t => {
-  var style = "here is some styling";
-  var html = "<this is not a tag>";
-  var ampHtml = html2Amp(style, html);
+  const style = "here is some styling";
+  const html = "<this is not a tag>";
+  const ampHtml = createAmpPage(html, {style});
   t.ok(ampHtml.indexOf(html) !== -1, "html inserted into amp template");
   t.ok(ampHtml.indexOf(style) !== -1, "style inserted into amp template");
-  t.ok(ampHtml.split('\n')[3].split(' ')[3].indexOf('amp') === 0,
+  t.ok(ampHtml.split('\n')[1].split(' ')[3].indexOf('amp') === 0,
     'html tag contains amp keyword');
   t.end();
 });
-
-// test("template contains html amp tag" t => {
-//
-// });

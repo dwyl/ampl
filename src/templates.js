@@ -1,37 +1,26 @@
-var createAmpHeader = style => `
-  <!doctype html>
+const createAmpHeader = ({
+  headOverride, style, canonicalUrl, title, extraHeadHTML
+}) => headOverride || (
+`<!doctype html>
   <html amp>
     <head>
       <meta charset="utf-8">
-      <link rel="canonical" href="default.html" >
+      <link rel="canonical" href="${canonicalUrl || ""}" >
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
       <style amp-custom>
         ${style}
       </style>
       <style>body {opacity: 0}</style><noscript><style>body {opacity: 1}</style></noscript>
       <script async src="https://cdn.ampproject.org/v0.js"></script>
-      <title>Index</title>
-    </head>
-`;
+      <title>${title || ""}</title>
+      ${extraHeadHTML || ""}
+    </head>`
+  );
 
-
-export var html2Amp = (style, contentHTML) => `
-  ${createAmpHeader(style)}
-    <body>
-      ${contentHTML}
-    </body>
-  </html>
-`;
-
-
-// var createLinkHtml = link => `
-// <a href='${link}'>${link}</a>
-// `;
-//
-// export var buildIndex = (style, linksArr) => `
-//   ${createAmpHeader(style)}
-//   <body>
-//     ${contentHTMLArr.map(createLinkHtml)}
-//   </body>
-// </html>
-// `;
+export const createAmpPage = (contentHTML, opts) => (
+`${createAmpHeader(opts)}
+  <body>
+    ${contentHTML}
+  </body>
+</html>`
+);
