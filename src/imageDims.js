@@ -50,7 +50,16 @@ export var getDims = (imageUrls, callback) => {
       callback(dimsArray);
     }
   }
-}
+};
+
+const imageTagRegex = /(<img)/;
+export const updateImgTags = (html, dimensions) => imageTagRegex.test(html)
+  ? updateImgTags(html.replace(imageTagRegex, `<amp-img
+      width="${dimensions[0].width}"
+      height="${dimensions[0].height}"
+      layout="responsive"`
+    ), dimensions.slice(1))
+  : html;
 
 var getBody = function(response, callback) {
   var chunks = [];

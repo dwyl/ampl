@@ -1,7 +1,7 @@
 import Remarkable from 'remarkable';
 import htmlparser from 'htmlparser2';
 
-import { getDims } from './imageDims.js';
+import { getDims, updateImgTags } from './imageDims.js';
 import { createAmpPage } from './templates.js';
 
 const remarkable = new Remarkable('full');
@@ -16,27 +16,12 @@ export const parse = (markdown, optsOrStyle, callback) => {
 
 export const markdown2AmpHTML = (opts, callback) => {
   const { markdown } = opts;
-  console.log(opts, markdown);
-  console.log(markdown);
   const htmlRaw = remarkable.render(markdown);
-  parseHtml(htmlRaw, (html, data) => {
-    getDims(data.urls, (dimensions) => {
-      const imageTagRegex = /(<img)/;
-      let htmlAml = html;
-      let i = 0;
-      // todo remove while loop
-      while(imageTagRegex.test(htmlAml)) {
-        const newTag = `
-          <amp-img
-            width="${dimensions[i].width}"
-            height="${dimensions[i].height}"
-            layout="responsive"`;
-        htmlAml = htmlAml.replace(imageTagRegex, newTag);
-        i += 1;
-      }
-      callback(htmlAml);
-    });
-  });
+  parseHtml(htmlRaw, (html, { imageUrls }) =>
+    getDims(imageUrls, (dimensions) =>
+      callback(updateImgTags(html, dimensions))
+    )
+  );
 }
 
 var attribStr = attribs => Object.keys(attribs).map(attribKey => (
@@ -47,7 +32,7 @@ var attribStr = attribs => Object.keys(attribs).map(attribKey => (
 
 var createParseRules = () => [
   (urls => ({
-    label: "urls",
+    label: "imageUrls",
     target: "img",
     onOpenTag: attribs => urls.push(attribs.src),
     getResults: () => urls
