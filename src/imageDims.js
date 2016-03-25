@@ -6,10 +6,8 @@ import url from 'url';
 
 export const getDims = (imageUrls, callback) => {
   const totalLinks = imageUrls.length;
-  let dimsFetched = 0;
-  const dimsArray = [];
   if (totalLinks === 0) {
-    setTimeout(() => callback(dimsArray), 0);
+    setTimeout(() => callback([]), 0);
   } else {
     imageUrls.forEach((imageUrl, index) => {
       const options = url.parse(imageUrl);
@@ -39,13 +37,19 @@ export const getDims = (imageUrls, callback) => {
       request.end();
     });
   }
-  const next = (dims, index) => {
-    dimsFetched += 1;
-    dimsArray[index] = dims;
-    if (dimsFetched === totalLinks) {
-      callback(dimsArray);
+  const next = asyncCaller(totalLinks, callback);
+};
+
+const asyncCaller = (length, callback) => {
+  const results = [];
+  let counter = 0;
+  return (result, i) => {
+    counter += 1;
+    results[i] = result;
+    if (counter === length) {
+      callback(results);
     }
-  }
+  };
 };
 
 const imageTagRegex = /(<img)/;
