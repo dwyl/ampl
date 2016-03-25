@@ -22,15 +22,15 @@ export const markdown2AmpHTML = (opts, callback) => {
       callback(updateImgTags(html, dimensions))
     )
   );
-}
+};
 
-var attribStr = attribs => Object.keys(attribs).map(attribKey => (
+const attribStr = attribs => Object.keys(attribs).map(attribKey =>
   attribs[attribKey].length === 0 ?
     attribKey :
     ` ${attribKey}='${attribs[attribKey]}'`
-)).join('');
+).join('');
 
-var createParseRules = () => [
+const createParseRules = () => [
   (urls => ({
     label: "imageUrls",
     target: "img",
@@ -48,11 +48,11 @@ var createParseRules = () => [
   }
 ];
 
-var parseHtml = function(html, callback) {
-  var parseRules = createParseRules();
-  var tagStack = [{text: "<!doctype html>"}];
-  var parser = new htmlparser.Parser({
-    onopentag: function(name, attribs) {
+const parseHtml = (html, callback) => {
+  const parseRules = createParseRules();
+  const tagStack = [{text: "<!doctype html>"}];
+  const parser = new htmlparser.Parser({
+    onopentag: (name, attribs) => {
       tagStack.push({name, attribs,
         text: ""
       });
@@ -62,12 +62,12 @@ var parseHtml = function(html, callback) {
         }
       });
     },
-    ontext: function(text) {
+    ontext: text => {
       tagStack[tagStack.length-1].text += text;
     },
-    onclosetag: function(name) {
-      var tag = tagStack.pop();
-      var text = tag.text;
+    onclosetag: name => {
+      const tag = tagStack.pop();
+      let text = tag.text;
       parseRules.forEach(rule => {
         if (rule.onCloseTag && !(rule.target && rule.target !== name)) {
           text = rule.onCloseTag(text);
@@ -76,8 +76,8 @@ var parseHtml = function(html, callback) {
       tagStack[tagStack.length-1].text +=
         `<${tag.name} ${attribStr(tag.attribs)}>${text}</${tag.name}>`;
     },
-    onend: function() {
-      var ruleOutput = parseRules.reduce((data, rule) => {
+    onend: () => {
+      const ruleOutput = parseRules.reduce((data, rule) => {
         if (typeof rule.getResults === 'function') {
           data[rule.label] = rule.getResults();
         }
