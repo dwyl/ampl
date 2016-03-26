@@ -32,6 +32,7 @@
     "hapi": "^12.1.0",
     "inert": "^3.2.0",
     "istanbul": "^0.4.2",
+    "nock": "^7.7.2",
     "tape": "^4.4.0"
   },
   "dependencies": {

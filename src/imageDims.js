@@ -28,7 +28,7 @@ export const getDims = (imageUrls, callback) => {
         })
       );
       request.on('error', (e) => {
-        console.log(`problem with request: ${e.message}`);
+        console.error(`problem with request: ${e.message}`);
         next({
           width: 0,
           height: 0
@@ -65,11 +65,15 @@ const getBody = (response, callback) => {
   const chunks = [];
   response.on('data', chunk => {
     chunks.push(chunk);
+    // how do we chunk with nock?
+    // sending a big image seems like a waste of time..
+    /* istanbul ignore if */
     if (chunks.length === 2) {
       callback(Buffer.concat(chunks));
     }
   });
   response.on('end', () => {
+    /* istanbul ignore else */
     if (chunks.length < 2) {
       callback(Buffer.concat(chunks));
     }
