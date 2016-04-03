@@ -34,16 +34,7 @@ const createParseRules = () => [
     target: "img",
     onOpenTag: attribs => urls.push(attribs.src),
     getResults: () => urls
-  }))([]),
-  {
-    label: "wrapper-main",
-    target: "body",
-    onCloseTag: text => `
-      <div class="wrapper-main">
-        ${text}
-      </div>
-    `
-  }
+  }))([])
 ];
 
 const parseHtml = (html, callback) => {
@@ -65,14 +56,8 @@ const parseHtml = (html, callback) => {
     },
     onclosetag: name => {
       const tag = tagStack.pop();
-      let text = tag.text;
-      parseRules.forEach(rule => {
-        if (rule.onCloseTag && !(rule.target && rule.target !== name)) {
-          text = rule.onCloseTag(text);
-        }
-      });
       tagStack[tagStack.length-1].text +=
-        `<${tag.name} ${attribStr(tag.attribs)}>${text}</${tag.name}>`;
+        `<${tag.name} ${attribStr(tag.attribs)}>${tag.text}</${tag.name}>`;
     },
     onend: () => {
       const ruleOutput = parseRules.reduce((data, rule) => {
