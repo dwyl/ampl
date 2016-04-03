@@ -1,62 +1,45 @@
-var Remarkable = require('remarkable');
-var htmlparser = require("htmlparser2");
+import Remarkable from 'remarkable';
+import htmlparser from 'htmlparser2';
 
-var remarkable = new Remarkable('full');
+import { getDims, updateImgTags } from './imageDims.js';
+import { createAmpPage } from './templates.js';
 
-import { getDims } from './imageDims.js';
-import { html2Amp } from './templates.js';
+const remarkable = new Remarkable('full');
 
-export function parse(mdString, css, callback) {
-  var htmlRaw = remarkable.render(mdString);
-  var htmlAmp = html2Amp(css, htmlRaw)
-  parseHtml(htmlAmp, function(htmlAmp, data) {
-    getDims(data.urls, function(dimensions) {
-      // todo remove while loop
-      var i = 0;
-      var imageTagRegex = /(<img)/;
-      while(imageTagRegex.test(htmlAmp)) {
-        var newTag = `
-          <amp-img
-            width="${dimensions[i].width}"
-            height="${dimensions[i].height}"
-            layout="responsive"`;
-        htmlAmp = htmlAmp.replace(imageTagRegex, newTag);
-        i += 1;
-      }
-      callback(htmlAmp);
-    });
-  });
+export const parse = (markdown, opts, callback) => {
+  markdown2AmpHTML({ markdown }, HTML =>
+    callback(createAmpPage(HTML, opts))
+  );
 };
 
-var attribStr = attribs => Object.keys(attribs).map(attribKey => (
-  attribs[attribKey].length === 0 ?
-    attribKey :
-    ` ${attribKey}='${attribs[attribKey]}'`
-)).join('');
+export const markdown2AmpHTML = (opts, callback) => {
+  const { markdown } = opts;
+  const htmlRaw = remarkable.render(markdown);
+  parseHtml(htmlRaw, (html, { imageUrls }) =>
+    getDims(imageUrls, (dimensions) =>
+      callback(updateImgTags(html, dimensions))
+    )
+  );
+};
 
-var createParseRules = () => [
+const attribStr = attribs => Object.keys(attribs).map(attribKey =>
+    ` ${attribKey}="${attribs[attribKey]}"`
+).join('');
+
+const createParseRules = () => [
   (urls => ({
-    label: "urls",
+    label: "imageUrls",
     target: "img",
     onOpenTag: attribs => urls.push(attribs.src),
     getResults: () => urls
-  }))([]),
-  {
-    label: "wrapper-main",
-    target: "body",
-    onCloseTag: text => `
-      <div class="wrapper-main">
-        ${text}
-      </div>
-    `
-  }
+  }))([])
 ];
 
-var parseHtml = function(html, callback) {
-  var parseRules = createParseRules();
-  var tagStack = [{text: "<!doctype html>"}];
-  var parser = new htmlparser.Parser({
-    onopentag: function(name, attribs) {
+const parseHtml = (html, callback) => {
+  const parseRules = createParseRules();
+  const tagStack = [{text: "<!doctype html>"}];
+  const parser = new htmlparser.Parser({
+    onopentag: (name, attribs) => {
       tagStack.push({name, attribs,
         text: ""
       });
@@ -66,22 +49,16 @@ var parseHtml = function(html, callback) {
         }
       });
     },
-    ontext: function(text) {
+    ontext: text => {
       tagStack[tagStack.length-1].text += text;
     },
-    onclosetag: function(name) {
-      var tag = tagStack.pop();
-      var text = tag.text;
-      parseRules.forEach(rule => {
-        if (rule.onCloseTag && !(rule.target && rule.target !== name)) {
-          text = rule.onCloseTag(text);
-        }
-      });
+    onclosetag: name => {
+      const tag = tagStack.pop();
       tagStack[tagStack.length-1].text +=
-        `<${tag.name} ${attribStr(tag.attribs)}>${text}</${tag.name}>`;
+        `<${tag.name} ${attribStr(tag.attribs)}>${tag.text}</${tag.name}>`;
     },
-    onend: function() {
-      var ruleOutput = parseRules.reduce((data, rule) => {
+    onend: () => {
+      const ruleOutput = parseRules.reduce((data, rule) => {
         if (typeof rule.getResults === 'function') {
           data[rule.label] = rule.getResults();
         }
@@ -93,3 +70,5 @@ var parseHtml = function(html, callback) {
   parser.write(html);
   parser.end();
 };
+
+export default parse;

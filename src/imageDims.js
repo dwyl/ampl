@@ -1,28 +1,22 @@
-var assert = require('assert');
-var sizeOf = require('image-size');
-var http = require('http');
-var https = require('https');
-var url = require('url');
+import assert from 'assert';
+import sizeOf from 'image-size';
+import http from 'http';
+import https from 'https';
+import url from 'url';
 
-export var getDims = (imageUrls, callback) => {
-  var totalLinks = imageUrls.length;
+export const getDims = (imageUrls, callback) => {
+  const totalLinks = imageUrls.length;
   if (totalLinks === 0) {
-    setTimeout(function() {
-      callback([]);
-    }, 0);
+    setTimeout(() => callback([]), 0);
   } else {
-    var dimsFetched = 0;
-    var dimsArray = [];
-    imageUrls.forEach(function(imageUrl, index) {
-      var options = url.parse(imageUrl);
-      var proto = options.protocol === 'https:' ? https : http;
-      // if (options.protocol === 'https:') options.protocol = 'http:';
-      var request = proto.request(options, function(response) {
-        getBody(response, function(body) {
-          var dims;
+    imageUrls.forEach((imageUrl, index) => {
+      const options = url.parse(imageUrl);
+      const proto = options.protocol === 'https:' ? https : http;
+      const request = proto.request(options, response =>
+        getBody(response, body => {
+          let dims;
           try {
             dims = sizeOf(body);
-            // if (typeof dims.width === 'undefined') throw 'NO';
           } catch(e) {
             dims = {
               width: 0,
@@ -31,10 +25,10 @@ export var getDims = (imageUrls, callback) => {
             console.warn('failed to find size of image', imageUrl);
           }
           next(dims, index);
-        });
-      });
+        })
+      );
       request.on('error', (e) => {
-        console.log(`problem with request: ${e.message}`);
+        console.error(`problem with request: ${e.message}`);
         next({
           width: 0,
           height: 0
@@ -43,24 +37,43 @@ export var getDims = (imageUrls, callback) => {
       request.end();
     });
   }
-  var next = function(dims, index) {
-    dimsFetched += 1;
-    dimsArray[index] = dims;
-    if (dimsFetched === totalLinks) {
-      callback(dimsArray);
-    }
-  }
-}
+  const next = asyncCaller(totalLinks, callback);
+};
 
-var getBody = function(response, callback) {
-  var chunks = [];
-  response.on('data', function(chunk) {
+const asyncCaller = (length, callback) => {
+  const results = [];
+  let counter = 0;
+  return (result, i) => {
+    counter += 1;
+    results[i] = result;
+    if (counter === length) {
+      callback(results);
+    }
+  };
+};
+
+const imageTagRegex = /(<img)/;
+export const updateImgTags = (html, dimensions) => imageTagRegex.test(html)
+  ? updateImgTags(html.replace(imageTagRegex, `<amp-img
+      width="${dimensions[0].width}"
+      height="${dimensions[0].height}"
+      layout="responsive"`
+    ), dimensions.slice(1))
+  : html;
+
+const getBody = (response, callback) => {
+  const chunks = [];
+  response.on('data', chunk => {
     chunks.push(chunk);
+    // how do we chunk with nock?
+    // sending a big image seems like a waste of time..
+    /* istanbul ignore if */
     if (chunks.length === 2) {
       callback(Buffer.concat(chunks));
     }
   });
-  response.on('end', function() {
+  response.on('end', () => {
+    /* istanbul ignore else */
     if (chunks.length < 2) {
       callback(Buffer.concat(chunks));
     }
