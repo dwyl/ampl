@@ -6,9 +6,7 @@ import { createAmpPage } from './templates.js';
 
 const remarkable = new Remarkable('full');
 
-export const parse = (markdown, optsOrStyle, callback) => {
-  const opts = typeof optsOrStyle === 'string' ?
-    {style: optsOrStyle} : optsOrStyle;
+export const parse = (markdown, opts, callback) => {
   markdown2AmpHTML({ markdown }, HTML =>
     callback(createAmpPage(HTML, opts))
   );
