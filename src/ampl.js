@@ -70,3 +70,5 @@ const parseHtml = (html, callback) => {
   parser.write(html);
   parser.end();
 };
+
+export default parse;
