@@ -5,7 +5,7 @@ const createAmpHeader = ({
 <html amp>
   <head>${typeof headOverride === 'string' ? headOverride : `
     <meta charset="utf-8">
-    <link rel="canonical" href="${canonicalUrl || ""}" >
+    <link rel="canonical" href="${canonicalUrl || ""}">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <style amp-custom>
       ${style || ""}

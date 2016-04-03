@@ -25,9 +25,7 @@ export const markdown2AmpHTML = (opts, callback) => {
 };
 
 const attribStr = attribs => Object.keys(attribs).map(attribKey =>
-  attribs[attribKey].length === 0 ?
-    attribKey :
-    ` ${attribKey}='${attribs[attribKey]}'`
+    ` ${attribKey}="${attribs[attribKey]}"`
 ).join('');
 
 const createParseRules = () => [
