@@ -7,6 +7,7 @@ Ampl transforms your Markdown into ***AMP-compliant html*** so it loads super-fa
 [![Code Climate](https://codeclimate.com/github/dwyl/ampl/badges/gpa.svg)](https://codeclimate.com/github/dwyl/ampl)
 [![Dependency Status](https://david-dm.org/dwyl/ampl.svg)](https://david-dm.org/dwyl/ampl)
 [![devDependency Status](https://david-dm.org/dwyl/ampl/dev-status.svg)](https://david-dm.org/dwyl/ampl#info=devDependencies)
+[![HitCount](https://hitt.herokuapp.com/dwyl/ampl.svg)](https://github.com/dwyl/ampl)
 
 ## Why?
 
