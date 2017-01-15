@@ -23,7 +23,7 @@ test("template.js", t => {
   t.ok(ampHtml.indexOf(html) !== -1, "html inserted into amp template");
   t.ok(ampHtml.indexOf(style) !== -1, "style inserted into amp template");
   t.ok(
-    ampHtml.split('\n')[2].split(' ')[1].indexOf('amp') === 0,
+    ampHtml.split('\n')[1].split(' ')[1].indexOf('amp') === 0,
     'html tag contains amp keyword'
   );
   t.end();

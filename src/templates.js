@@ -1,7 +1,6 @@
 const createAmpHeader = ({
   headOverride, style, canonicalUrl, title, extraHeadHTML
 }) => `
-<!doctype html>
 <html amp>
   <head>${typeof headOverride === 'string' ? headOverride : `
     <meta charset="utf-8">
