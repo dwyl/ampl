@@ -40,8 +40,8 @@
     "tape": "^4.5.1"
   },
   "dependencies": {
-    "htmlparser2": "^3.9.0",
-    "image-size": "^0.5.0",
-    "remarkable": "^1.6.2"
+    "htmlparser2": "^3.9.2",
+    "image-size": "^0.6.3",
+    "remarkable": "^1.7.1"
   }
 }
