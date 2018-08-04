@@ -9,7 +9,7 @@ Ampl transforms your Markdown into ***AMP-compliant html*** so it loads super-fa
 [![devDependency Status](https://david-dm.org/dwyl/ampl/dev-status.svg)](https://david-dm.org/dwyl/ampl#info=devDependencies)
 [![HitCount](https://hitt.herokuapp.com/dwyl/ampl.svg)](https://github.com/dwyl/ampl)
 
-## Why?
+## Why?
 
 Google is putting their clout behind the AMP
 (_**A**ccelerated **M**obile **P**ages_) Project
